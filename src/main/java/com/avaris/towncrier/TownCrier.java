@@ -2,12 +2,9 @@ package com.avaris.towncrier;
 
 import com.avaris.towncrier.api.v1.impl.ModLifecycleEvents;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.loader.api.FabricLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.lang.reflect.Field;
 
 /**
  * The common entrypoint for TownCrier
