@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "towncrier",
+  "version": "${version}",
+  "name": "TownCrier",
+  "description": "Provides event APIs",
+  "authors": [],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/towncrier/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "com.avaris.towncrier.client.TownCrierClient"
+    ],
+    "main": [
+      "com.avaris.towncrier.TownCrier"
+    ]
+  },
+  "mixins": [
+    "towncrier.mixins.json",
+    {
+      "config": "towncrier.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
