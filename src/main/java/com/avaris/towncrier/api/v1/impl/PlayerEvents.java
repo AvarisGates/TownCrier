@@ -31,7 +31,7 @@ import java.net.SocketAddress;
 public class PlayerEvents {
     /**
      * Called after a player joins the server.
-     * Specifically at the end of {@link net.minecraft.server.PlayerManager#onPlayerConnect(ClientConnection, ServerPlayerEntity, ConnectedClientData)}, before {@link PlayerEvents#PLAYER_JOIN_EVENT}
+     * Specifically at the end of {@link net.minecraft.server.PlayerManager#onPlayerConnect(ClientConnection, ServerPlayerEntity, ConnectedClientData)}, before {@link PlayerEvents#PLAYER_JOIN_EX_EVENT}
      */
     public static final Event<PlayerJoin> PLAYER_JOIN_EVENT = EventFactory.createArrayBacked(PlayerJoin.class,(callbacks) -> (player) -> {
         TownCrier.logEventCall(PlayerEvents.class,"PLAYER_JOIN_EVENT");
@@ -42,7 +42,7 @@ public class PlayerEvents {
 
     /**
      * Extended player join event, calls {@link PlayerEvents#PLAYER_JOIN_EVENT}
-     * Specifically at the end of {@link net.minecraft.server.PlayerManager#onPlayerConnect(ClientConnection, ServerPlayerEntity, ConnectedClientData)}, after {@link PlayerEvents#PLAYER_JOIN_EX_EVENT}
+     * Specifically at the end of {@link net.minecraft.server.PlayerManager#onPlayerConnect(ClientConnection, ServerPlayerEntity, ConnectedClientData)}, after {@link PlayerEvents#PLAYER_JOIN_EVENT}
      */
     public static final Event<PlayerJoinEx> PLAYER_JOIN_EX_EVENT = EventFactory.createArrayBacked(PlayerJoinEx.class,(callbacks) -> (connection,player,clientData) -> {
         TownCrier.logEventCall(PlayerEvents.class,"PLAYER_JOIN_EX_EVENT");
