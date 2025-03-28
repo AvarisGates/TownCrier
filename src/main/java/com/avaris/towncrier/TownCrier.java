@@ -34,10 +34,13 @@ public class TownCrier implements ModInitializer {
     }
 
     public static <T> Event<T> createNewEvent(Class<?> callingClass, String eventName,Class<? super T> type, Function<T[], T> invokerFactory) {
-        return EventFactory.createArrayBacked(type,invokerFactory.compose(ts -> {
-            logEventCall(callingClass,eventName);
-            return ts;
-        }));
+        if(shouldDisplayDebugInfo()){
+            invokerFactory = invokerFactory.compose(ts -> {
+                logEventCall(callingClass,eventName);
+                return ts;
+            });
+        }
+        return EventFactory.createArrayBacked(type,invokerFactory);
     }
 
     @Override
