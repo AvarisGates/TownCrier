@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ServerPlayerEntity.class)
-public class ServerPlayerEntityMixin {
+public abstract class ServerPlayerEntityMixin {
     @Inject(method = "onDeath",at = @At("RETURN"))
     void onDeath(DamageSource damageSource, CallbackInfo ci){
         PlayerEvents.DEATH_EVENT.invoker().onDeath((ServerPlayerEntity)(Object)this,damageSource);

@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Environment(EnvType.CLIENT)
 @Mixin(MinecraftClient.class)
-public class MissedAttackMixin {
+public abstract class MissedAttackMixin {
     @Inject(method = "doAttack",at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;resetLastAttackedTicks()V"))
     void onMissedDoAttack(CallbackInfoReturnable<Boolean> cir, @Local ItemStack stack){
         ClientPlayerEvents.PLAYER_DO_ATTACK_MISS_EVENT.invoker().onPlayerDoAttackMiss(((MinecraftClient) (Object)this).player,stack);
