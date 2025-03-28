@@ -9,15 +9,13 @@ import net.fabricmc.fabric.api.event.EventFactory;
  * TownCrier lifecycle events ie. initialization.
  */
 public class ModLifecycleEvents {
-    public static final Event<Initialize> INITIALIZE_EVENT = EventFactory.createArrayBacked(Initialize.class,(callbacks) -> () -> {
-        TownCrier.logEventCall(ModLifecycleEvents.class,"INITIALIZE_EVENT");
+    public static final Event<Initialize> INITIALIZE_EVENT = TownCrier.createNewEvent(ModLifecycleEvents.class,"INITIALIZE_EVENT",Initialize.class,(callbacks) -> () -> {
         for(var callback : callbacks){
             callback.onInitialize();
         }
     });
 
-    public static final Event<Initialized> INITIALIZED_EVENT = EventFactory.createArrayBacked(Initialized.class,(callbacks) -> () -> {
-        TownCrier.logEventCall(ModLifecycleEvents.class,"INITIALIZED_EVENT");
+    public static final Event<Initialized> INITIALIZED_EVENT = TownCrier.createNewEvent(ModLifecycleEvents.class,"INITIALIZED_EVENT",Initialized.class,(callbacks) -> () -> {
         for(var callback : callbacks){
             callback.onInitialized();
         }
