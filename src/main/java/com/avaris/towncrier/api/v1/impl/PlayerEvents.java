@@ -119,10 +119,32 @@ public class PlayerEvents {
      * Called after a {@link ServerPlayerEntity} dies. <br>
      * Specifically at the end of the {@link ServerPlayerEntity#onDeath(DamageSource)} call.
      */
-    public static final Event<OnDeath> ON_DEATH_EVENT = EventFactory.createArrayBacked(OnDeath.class,(callbacks) -> (damageSource) -> {
-        TownCrier.logEventCall(PlayerEvents.class,"ON_DEATH_EVENT");
+    public static final Event<Death> DEATH_EVENT = EventFactory.createArrayBacked(Death.class,(callbacks) -> (player, damageSource) -> {
+        TownCrier.logEventCall(PlayerEvents.class,"DEATH_EVENT");
         for(var callback : callbacks){
-            callback.onDeath(damageSource);
+            callback.onDeath(player, damageSource);
+        }
+    });
+
+    /**
+     * Called after a {@link ServerPlayerEntity} enters combat. <br>
+     * Specifically at the end of the {@link ServerPlayerEntity#enterCombat()} call.
+     */
+    public static final Event<EnterCombat> ENTER_COMBAT_EVENT = EventFactory.createArrayBacked(EnterCombat.class,(callbacks) -> (player) -> {
+        TownCrier.logEventCall(PlayerEvents.class,"ENTER_COMBAT_EVENT");
+        for(var callback : callbacks){
+            callback.onEnterCombat(player);
+        }
+    });
+
+    /**
+     * Called after a {@link ServerPlayerEntity} ends combat. <br>
+     * Specifically at the end of the {@link ServerPlayerEntity#endCombat()} call.
+     */
+    public static final Event<EndCombat> END_COMBAT_EVENT = EventFactory.createArrayBacked(EndCombat.class,(callbacks) -> (player) -> {
+        TownCrier.logEventCall(PlayerEvents.class,"END_COMBAT_EVENT");
+        for(var callback : callbacks){
+            callback.onEndCombat(player);
         }
     });
 
@@ -162,7 +184,17 @@ public class PlayerEvents {
     }
 
     @FunctionalInterface
-    public interface OnDeath{
-        void onDeath(DamageSource damageSource);
+    public interface Death {
+        void onDeath(@NotNull ServerPlayerEntity player, DamageSource damageSource);
+    }
+
+    @FunctionalInterface
+    public interface EnterCombat {
+        void onEnterCombat(@NotNull ServerPlayerEntity player);
+    }
+
+    @FunctionalInterface
+    public interface EndCombat {
+        void onEndCombat(@NotNull ServerPlayerEntity player);
     }
 }
