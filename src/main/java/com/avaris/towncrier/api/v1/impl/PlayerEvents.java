@@ -14,10 +14,12 @@ import net.minecraft.server.network.ConnectedClientData;
 import net.minecraft.server.network.ServerCommonNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.world.GameMode;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.lang.invoke.MethodHandles;
 import java.net.SocketAddress;
 
 /**
@@ -148,6 +150,22 @@ public class PlayerEvents {
         }
     });
 
+    /**
+     * Called before a {@link ServerPlayerEntity} changes their game mode. <br>
+     * Specifically at the beginning of the {@link ServerPlayerEntity#changeGameMode(GameMode)} call.<br>
+     * Return {@code false} to prevent the game mode change.
+     */
+    public static final Event<ChangeGameMode> CHANGE_GAME_MODE_EVENT = EventFactory.createArrayBacked(ChangeGameMode.class,(callbacks) -> (player,gamemode) -> {
+        TownCrier.logEventCall(PlayerEvents.class,"CHANGE_GAME_MODE_EVENT");
+        boolean ret = true;
+        for(var callback : callbacks){
+            if(!callback.onChangeGameMode(player,gamemode)){
+                ret = false;
+            }
+        }
+        return ret;
+    });
+
     @FunctionalInterface
     public interface PlayerJoin{
         void onPlayerJoin(@NotNull ServerPlayerEntity player);
@@ -196,5 +214,10 @@ public class PlayerEvents {
     @FunctionalInterface
     public interface EndCombat {
         void onEndCombat(@NotNull ServerPlayerEntity player);
+    }
+
+    @FunctionalInterface
+    public interface ChangeGameMode {
+        boolean onChangeGameMode(@NotNull ServerPlayerEntity player, GameMode gameMode);
     }
 }
