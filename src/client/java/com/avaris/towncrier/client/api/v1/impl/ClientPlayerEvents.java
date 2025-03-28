@@ -13,7 +13,8 @@ public class ClientPlayerEvents {
     /**
      * Triggered when a player swings their hand (weapon) and doesn't hit anything or simply misses.
      */
-    public static final Event<PlayerDoAttackMiss> PLAYER_DO_ATTACK_MISS_EVENT = TownCrier.createNewEvent(ClientPlayerEvents.class,"PLAYER_DO_ATTACK_MISS_EVENT",PlayerDoAttackMiss.class,(callbacks) -> (player, stack) ->{
+    public static final Event<PlayerDoAttackMiss> PLAYER_DO_ATTACK_MISS_EVENT = EventFactory.createArrayBacked(PlayerDoAttackMiss.class,(callbacks) -> (player, stack) ->{
+        TownCrier.logEventCall(ClientPlayerEntity.class,"PLAYER_DO_ATTACK_MISS_EVENT");
         for(var callback : callbacks){
             callback.onPlayerDoAttackMiss(player,stack);
         }
