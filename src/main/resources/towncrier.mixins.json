@@ -6,6 +6,7 @@
   "mixins": [
     "PlayerGotKillMixin",
     "PlayerManagerMixin",
+    "ServerPlayerEntityMixin",
     "ServerSendChatPacketMixin"
   ],
   "injectors": {

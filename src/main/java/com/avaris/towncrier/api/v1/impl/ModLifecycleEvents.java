@@ -5,6 +5,9 @@ import com.avaris.towncrier.TownCrier;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 
+/**
+ * TownCrier lifecycle events ie. initialization.
+ */
 public class ModLifecycleEvents {
     public static final Event<Initialize> INITIALIZE_EVENT = EventFactory.createArrayBacked(Initialize.class,(callbacks) -> () -> {
         TownCrier.logEventCall(ModLifecycleEvents.class,"INITIALIZE_EVENT");

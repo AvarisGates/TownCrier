@@ -8,7 +8,9 @@ import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ConnectedClientData;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -21,12 +23,18 @@ public class PlayerManagerMixin {
 
     @Inject(method = "onPlayerConnect",at = @At("RETURN"))
     void onPlayerConnect(ClientConnection connection, ServerPlayerEntity player, ConnectedClientData clientData, CallbackInfo ci){
+        if(connection == null || player == null){
+            return;
+        }
         // PLAYER_JOIN_EX_EVENT implicitly calls PLAYER_JOIN_EVENT
         PlayerEvents.PLAYER_JOIN_EX_EVENT.invoker().onPlayerJoin(connection,player,clientData);
     }
 
     @Inject(method = "remove", at = @At("HEAD"))
     void onPlayerDisconnect(ServerPlayerEntity player, CallbackInfo ci){
+        if(player == null){
+            return;
+        }
        PlayerEvents.PLAYER_LEAVE_EVENT.invoker().onPlayerLeave(player);
     }
 
