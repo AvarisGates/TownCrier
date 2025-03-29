@@ -3,6 +3,7 @@ package com.avaris.towncrier.mixin;
 import com.avaris.towncrier.api.v1.impl.PlayerEvents;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.GameMode;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -31,6 +32,19 @@ public abstract class ServerPlayerEntityMixin {
     void onChangeGameMode(GameMode gameMode, CallbackInfoReturnable<Boolean> cir){
         if(!PlayerEvents.CHANGE_GAME_MODE_EVENT.invoker().onChangeGameMode((ServerPlayerEntity)(Object)this,gameMode)){
            cir.setReturnValue(false);
+        }
+    }
+    @Inject(method = "damage",at = @At("HEAD"),cancellable = true)
+    void onDamage(ServerWorld world, DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir){
+        if(!PlayerEvents.DAMAGE_EVENT.invoker().onDamage((ServerPlayerEntity)(Object)this,world,source,amount)){
+            cir.setReturnValue(false);
+        }
+    }
+
+    @Inject(method = "tickHunger",at = @At("HEAD"),cancellable = true)
+    void onTickHunger(CallbackInfo ci){
+        if(!PlayerEvents.TICK_HUNGER_EVENT.invoker().onTickHunger((ServerPlayerEntity)(Object)this)){
+            ci.cancel();
         }
     }
 }

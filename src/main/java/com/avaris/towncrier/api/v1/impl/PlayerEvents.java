@@ -13,6 +13,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ConnectedClientData;
 import net.minecraft.server.network.ServerCommonNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.world.GameMode;
 import org.jetbrains.annotations.NotNull;
@@ -165,6 +166,38 @@ public class PlayerEvents {
         return ret;
     });
 
+    /**
+     * Called before a {@link ServerPlayerEntity} receives damage<br>
+     * Specifically at the beginning of the {@link ServerPlayerEntity#damage(ServerWorld, DamageSource, float)} call.<br>
+     * Return {@code false} to prevent the damage instance.
+     */
+    public static final Event<Damage> DAMAGE_EVENT = EventFactory.createArrayBacked(Damage.class,(callbacks) -> (player,world,source,amount) -> {
+        TownCrier.logEventCall(PlayerEvents.class,"DAMAGE_EVENT");
+        boolean ret = true;
+        for(var callback : callbacks){
+            if(!callback.onDamage(player,world,source,amount)){
+                ret = false;
+            }
+        }
+        return ret;
+    });
+
+    /**
+     * Called before a {@link ServerPlayerEntity} receives damage<br>
+     * Specifically at the beginning of the {@link ServerPlayerEntity#damage(ServerWorld, DamageSource, float)} call.<br>
+     * Return {@code false} to prevent the damage instance.
+     */
+    public static final Event<TickHunger> TICK_HUNGER_EVENT = EventFactory.createArrayBacked(TickHunger.class,(callbacks) -> (player) -> {
+        TownCrier.logEventCall(PlayerEvents.class,"TICK_HUNGER_EVENT");
+        boolean ret = true;
+        for(var callback : callbacks){
+            if(!callback.onTickHunger(player)){
+                ret = false;
+            }
+        }
+        return ret;
+    });
+
     @FunctionalInterface
     public interface PlayerJoin{
         void onPlayerJoin(@NotNull ServerPlayerEntity player);
@@ -218,5 +251,15 @@ public class PlayerEvents {
     @FunctionalInterface
     public interface ChangeGameMode {
         boolean onChangeGameMode(@NotNull ServerPlayerEntity player, GameMode gameMode);
+    }
+
+    @FunctionalInterface
+    public interface Damage {
+        boolean onDamage(@NotNull ServerPlayerEntity player, ServerWorld world, DamageSource source, float amount);
+    }
+
+    @FunctionalInterface
+    public interface TickHunger {
+        boolean onTickHunger(@NotNull ServerPlayerEntity player);
     }
 }
