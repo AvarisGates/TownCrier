@@ -3,6 +3,7 @@ package com.avaris.towncrier;
 import com.avaris.towncrier.api.v1.impl.ModLifecycleEvents;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
+import org.jetbrains.annotations.ApiStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,6 +11,7 @@ import org.slf4j.LoggerFactory;
  * The common entrypoint for TownCrier
  * @see com.avaris.towncrier.api.v1.impl.TownCrierApi
  */
+@ApiStatus.Internal
 public class TownCrier implements ModInitializer {
 
     public static String MOD_ID = "towncrier";
@@ -39,7 +41,7 @@ public class TownCrier implements ModInitializer {
 
         // On the default debug environment there are 55 mods.
         // If there are 55 mods loaded we assume we are in the mod's debug environment.
-        //debugLogsEnabled = FabricLoader.getInstance().getAllMods().size() == 55;
+        debugLogsEnabled = FabricLoader.getInstance().getAllMods().size() == 55;
 
         ModLifecycleEvents.INITIALIZED_EVENT.invoker().onInitialized();
     }
